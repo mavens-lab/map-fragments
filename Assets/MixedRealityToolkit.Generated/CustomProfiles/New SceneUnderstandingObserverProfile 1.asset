@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a66f7659243ab748891f032ff4477e2, type: 3}
-  m_Name: DemoSceneUnderstandingObserverProfile
+  m_Name: New SceneUnderstandingObserverProfile 1
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   startupBehavior: 0
@@ -21,7 +21,7 @@ MonoBehaviour:
   updateOnceInitialized: 1
   autoUpdate: 1
   defaultPhysicsLayer: 31
-  surfaceTypes: 190
+  surfaceTypes: 60
   instantiationBatchRate: 10
   defaultMaterial: {fileID: 2100000, guid: a2137747e94e9744b9c97181972d0ed8, type: 2}
   defaultWorldMeshMaterial: {fileID: 2100000, guid: f6d42d214eaa65e44965e766112eb678, type: 2}

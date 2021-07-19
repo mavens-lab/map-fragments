@@ -27,6 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         private GameObject InstantiatedPrefab = null;
         [SerializeField]
         private Transform InstantiatedParent = null;
+        //JC
+        [SerializeField]
+        private Transform InstantiatedParent_copy = null;
 
         [Header("UI")]
         [SerializeField]
@@ -60,6 +63,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
         private List<GameObject> instantiatedPrefabs;
 
+        //JC
+        private List<GameObject> instantiatedPrefabs_copy;
+
         private Dictionary<SpatialAwarenessSurfaceTypes, Dictionary<int, SpatialAwarenessSceneObject>> observedSceneObjects;
 
         #endregion Private Fields
@@ -70,6 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         {
             observer = CoreServices.GetSpatialAwarenessSystemDataProvider<IMixedRealitySceneUnderstandingObserver>();
 
+            //JC
+            Debug.Log("JC: Start()");
+
             if (observer == null)
             {
                 Debug.LogError("Couldn't access Scene Understanding Observer! Please make sure the current build target is set to Universal Windows Platform. "
@@ -79,6 +88,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             InitToggleButtonState();
             instantiatedPrefabs = new List<GameObject>();
             observedSceneObjects = new Dictionary<SpatialAwarenessSurfaceTypes, Dictionary<int, SpatialAwarenessSceneObject>>();
+
+            //JC: have the world mesh viewable by default (GUI button state messed up though)
+            ToggleWorld();
+
+            //JC: Load my scene
+            loadAnotherScene();
         }
 
         protected override void OnEnable()
@@ -106,6 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
             // This method called everytime a SceneObject created by the SU observer
             // The eventData contains everything you need do something useful
 
+
             AddToData(eventData.Id);
 
             if (observedSceneObjects.TryGetValue(eventData.SpatialObject.SurfaceType, out Dictionary<int, SpatialAwarenessSceneObject> sceneObjectDict))
@@ -117,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                 observedSceneObjects.Add(eventData.SpatialObject.SurfaceType, new Dictionary<int, SpatialAwarenessSceneObject> { { eventData.Id, eventData.SpatialObject } });
             }
             
+            //JC: the instantiated prefabs are viewable under "Demo Parent" when Planes are enabled in the MixedReality Toolkit object
             if (InstantiatePrefabs && eventData.SpatialObject.Quads.Count > 0)
             {
                 var prefab = Instantiate(InstantiatedPrefab);
@@ -129,6 +146,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
                     prefab.transform.SetParent(InstantiatedParent);
                 }
                 instantiatedPrefabs.Add(prefab);
+
+                /*
+                //JC: create a copy at an offset location
+                var prefab_copy = Instantiate(InstantiatedPrefab);
+                Vector3 offset = new Vector3(10, 0, 0);
+                prefab_copy.transform.SetPositionAndRotation(eventData.SpatialObject.Position + offset, eventData.SpatialObject.Rotation);
+                float sx_copy = eventData.SpatialObject.Quads[0].Extents.x;
+                float sy_copy = eventData.SpatialObject.Quads[0].Extents.y;
+                prefab_copy.transform.localScale = new Vector3(sx_copy, sy_copy, .1f);
+                if (InstantiatedParent_copy)
+                {
+                    prefab_copy.transform.SetParent(InstantiatedParent_copy);
+                }
+                instantiatedPrefabs_copy.Add(prefab_copy);
+                */
             }
             else
             {
@@ -232,6 +264,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         public void ToggleAutoUpdate()
         {
             observer.AutoUpdate = !observer.AutoUpdate;
+
+            //JC
+            Debug.Log("JC:" + observer.SceneObjects.Count);
+
         }
 
         /// <summary>
@@ -375,6 +411,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         #endregion Public Functions
 
         #region Helper Functions
+
+
+        private void loadAnotherScene()
+        {
+            
+        }
 
         private void InitToggleButtonState()
         {
