@@ -7,7 +7,7 @@
       "dependencies": {}
     },
     "com.microsoft.windows.mixedreality.dotnetwinrt": {
-      "version": "file:MixedReality/com.microsoft.windows.mixedreality.dotnetwinrt-0.5.1052.tgz",
+      "version": "file:MixedReality/com.microsoft.windows.mixedreality.dotnetwinrt-0.5.2009.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {}
