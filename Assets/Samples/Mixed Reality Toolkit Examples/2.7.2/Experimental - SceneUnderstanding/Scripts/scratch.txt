@@ -1,0 +1,61 @@
+//*************** JC: load second scene with clunky code
+byte[] sceneData2 = SecondPath.bytes;
+SceneFragment frag2 = SceneFragment.Deserialize(sceneData2);
+SceneFragment[] sceneFragmentsArray2 = new SceneFragment[1] { frag2 };
+Scene suScene2 = SceneUnderstanding.Scene.FromFragments(sceneFragmentsArray2);
+
+
+if (suScene2 != null)
+{
+    Debug.Log("JC: suScene is not null, computing transformation");
+    // Retrieve a transformation matrix that will allow us orient the Scene Understanding Objects into
+    // their correct corresponding position in the unity world
+    System.Numerics.Matrix4x4? sceneToUnityTransformAsMatrix4x4 = GetSceneToUnityTransformAsMatrix4x4(suScene2);
+
+    if (sceneToUnityTransformAsMatrix4x4 != null)
+    {
+        Debug.Log("JC: transformation: " + sceneToUnityTransformAsMatrix4x4);
+        // If there was previously a scene displayed in the game world, destroy it
+        // to avoid overlap with the new scene about to be displayed
+        DestroyAllGameObjectsUnderParent(SceneRoot.transform);
+
+        // Allow from one frame to yield the coroutine back to the main thread
+        yield return null;
+
+        // Using the transformation matrix generated above, port its values into the tranform of the scene root (Numerics.matrix -> GameObject.Transform)
+        SetUnityTransformFromMatrix4x4(SceneRoot.transform, sceneToUnityTransformAsMatrix4x4.Value, RunOnDevice);
+
+        if (!RunOnDevice)
+        {
+            // If the scene is not running on a device, orient the scene root relative to the floor of the scene
+            // and unity's up vector
+            OrientSceneForPC(SceneRoot, suScene2);
+        }
+
+
+        Debug.Log("JC: " + suScene2.SceneObjects.Count + " objects detected in the merged scene");
+
+        // After the scene has been oriented, loop through all the scene objects and
+        // generate their corresponding Unity Object
+        IEnumerable<SceneUnderstanding.SceneObject> sceneObjects2 = suScene2.SceneObjects;
+
+        int i = 0;
+        foreach (SceneUnderstanding.SceneObject sceneObject in sceneObjects2)
+        {
+            if (DisplaySceneObject(sceneObject))
+            {
+                if (++i % NumberOfSceneObjectsToLoadPerFrame == 0)
+                {
+                    // Allow a certain number of objects to load before yielding back to main thread
+                    yield return null;
+                }
+            }
+        }
+
+        Debug.Log("JC: There were " + i + " objects displayed in the scene");
+    }
+
+    // When all objects have been loaded, finish.
+    Debug.Log("SceneUnderStandingManager.DisplayData: Display Completed");
+
+                    //*****************************************

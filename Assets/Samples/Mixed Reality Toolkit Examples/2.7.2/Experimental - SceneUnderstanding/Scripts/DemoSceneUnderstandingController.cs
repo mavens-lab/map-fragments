@@ -415,8 +415,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
         private void loadAnotherScene()
         {
-            
+            byte[] sceneBytes = null;
+
         }
+
+
+
 
         private void InitToggleButtonState()
         {
