@@ -471,8 +471,10 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
 
                 if (sceneToUnityTransformAsMatrix4x4 != null)
                 {
+                    
                     // If there was previously a scene displayed in the game world, destroy it
                     // to avoid overlap with the new scene about to be displayed
+                    //JC: disable this to display multiple scenes simultaneously?
                     DestroyAllGameObjectsUnderParent(SceneRoot.transform);
 
                     // Allow from one frame to yield the coroutine back to the main thread
@@ -505,6 +507,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                             }
                         }
                     }
+
                 }
 
                 // When all objects have been loaded, finish.
@@ -600,6 +603,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             {
                 // If the Scene is running on a device, add a World Anchor to align the Unity object
                 // to the XR scene
+
+                //JC: disable this, might need Azure spatial anchors or other anchors library to work
                 //unityParentHolderObject.AddComponent<UnityEngine.XR.WSA.WorldAnchor>();
             }
 
