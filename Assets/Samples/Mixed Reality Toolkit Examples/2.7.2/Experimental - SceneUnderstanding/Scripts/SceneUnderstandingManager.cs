@@ -14,6 +14,10 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
     using UnityEngine;
     using UnityEngine.Events;
 
+    // To interact with Amazon S3.
+    using Amazon;
+    using Amazon.S3;
+    using Amazon.S3.Model;
 
 #if WINDOWS_UWP
     using WindowsStorage = global::Windows.Storage;
@@ -165,6 +169,11 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         private bool RunOnDevice;
         private readonly int NumberOfSceneObjectsToLoadPerFrame = 5;
 
+        //JC: S3 client
+        private static IAmazonS3 s3Client;
+        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest1;
+        private Task loadTask = null;
+
         #endregion
 
         #region Unity Start and Update
@@ -217,6 +226,19 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     Debug.LogException(e);
                 }
             }
+
+            //JC: test code to download bytes file from S3. "await" doesn't seem to do much
+            LoadFileS3();
+        }
+
+
+        //JC: hack, delay the display until the S3 object has a chance to download
+        IEnumerator Timer(TaskCompletionSource<bool> completionSource)
+        {
+            print(Time.time);
+            yield return new WaitForSeconds(5);
+            print(Time.time);
+            StartCoroutine(DisplayDataRoutine(completionSource));
         }
 
         private async void Update()
@@ -399,7 +421,9 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 OnLoadStarted.Invoke();
 
                 // Start the coroutine and pass in the completion source
-                StartCoroutine(DisplayDataRoutine(completionSource));
+                //JC: add a delay
+                StartCoroutine(Timer(completionSource));
+                
 
                 // Return the newly running task
                 return displayTask;
@@ -416,6 +440,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         private IEnumerator DisplayDataRoutine(TaskCompletionSource<bool> completionSource)
         {
             Debug.Log("SceneUnderstandingManager.DisplayData: About to display the latest set of Scene Objects");
+
+
             SceneUnderstanding.Scene suScene = null;
             if (QuerySceneFromDevice)
             {
@@ -434,6 +460,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 // Store all the fragments and build a Scene with them
                 SceneFragment[] sceneFragments = new SceneFragment[SUSerializedScenePaths.Count];
                 int index = 0;
+                Debug.Log("JC: DisplayDataRoutine has " + SUSerializedScenePaths.Count + "scene fragments to load");
                 foreach (TextAsset serializedScene in SUSerializedScenePaths)
                 {
                     if (serializedScene != null)
@@ -469,9 +496,11 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 // their correct corresponding position in the unity world
                 System.Numerics.Matrix4x4? sceneToUnityTransformAsMatrix4x4 = GetSceneToUnityTransformAsMatrix4x4(suScene);
 
+                Debug.Log("JC: scene is not null");
+
                 if (sceneToUnityTransformAsMatrix4x4 != null)
                 {
-                    
+                    Debug.Log("JC: transformation is not null");
                     // If there was previously a scene displayed in the game world, destroy it
                     // to avoid overlap with the new scene about to be displayed
                     //JC: disable this to display multiple scenes simultaneously?
@@ -494,6 +523,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     // After the scene has been oriented, loop through all the scene objects and
                     // generate their corresponding Unity Object
                     IEnumerable<SceneUnderstanding.SceneObject> sceneObjects = suScene.SceneObjects;
+
+                    Debug.Log("JC: there are " + suScene.SceneObjects.Count + " sceneObjects in the scene");
 
                     int i = 0;
                     foreach (SceneUnderstanding.SceneObject sceneObject in sceneObjects)
@@ -1540,5 +1571,91 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
 
         #endregion
 
+
+
+        //JC: S3 functions
+
+        private async Task LoadFileS3()
+        {
+            // Before running this app:
+            // - Credentials must be specified in an AWS profile. If you use a profile other than
+            //   the [default] profile, also set the AWS_PROFILE environment variable.
+            // - An AWS Region must be specified either in the [default] profile
+            //   or by setting the AWS_REGION environment variable.
+
+            Debug.Log("JC: entered LoadFileS3");
+
+
+            // Create an S3 client object.
+            s3Client = new AmazonS3Client(bucketRegion);
+            ReadObjectDataAsync();
+
+        }
+
+        private async Task ReadObjectDataAsync()
+        {
+            string responseBody;
+            try
+            {
+                GetObjectRequest request = new GetObjectRequest
+                {
+                    BucketName = "map-fragments",
+                    Key = "upstairs.bytes"
+                };
+                using (GetObjectResponse response = await s3Client.GetObjectAsync(request))
+                using (Stream responseStream = response.ResponseStream)
+                //using (StreamReader reader = new StreamReader(responseStream,Encoding.ASCII))
+                using (BinaryReader reader = new BinaryReader(responseStream))
+                {
+                    string title = response.Metadata["x-amz-meta-title"]; // Assume you have "title" as medata added to the object.
+                    string contentType = response.Headers["Content-Type"];
+                    Debug.Log("JC: Object metadata, Title: " + title);
+                    Debug.Log("JC: Content type: " + contentType);
+
+                    //responseBody = reader.ReadToEnd(); // Now you process the response body.
+                    byte[] binaryResponse = reader.ReadBytes(563574);
+                    
+                    
+                    responseBody = Encoding.ASCII.GetString(binaryResponse);
+                    //responseBody = BitConverter.ToString(binaryResponse);
+
+                    //JC: write the .bytes file for debugging
+                    string path = "Assets/Resources/test.bytes";
+                    BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create));
+                    writer.Write(binaryResponse);
+                    //StreamWriter writer = new StreamWriter(path);
+                    //writer.Write(responseBody);
+                    writer.Close();
+
+
+                    TextAsset myTextAsset = (TextAsset)Resources.Load("test");
+
+                  
+                    SUSerializedScenePaths.Add(myTextAsset);
+
+                    //SUSerializedScenePaths.Add(new TextAsset(responseBody));
+
+                    Debug.Log("JC: downloaded a string of length " + responseBody.Length);
+
+                   
+
+                    
+
+                    Debug.Log("JC: added S3 file to list of scene paths");
+                    Debug.Log("JC: total paths: " + SUSerializedScenePaths.Count);
+                }
+            }
+            catch (AmazonS3Exception e)
+            {
+                // If bucket or object does not exist
+                Debug.Log("JC: Error encountered ***. Message: " + e.Message + " when reading object");
+            }
+            catch (Exception e)
+            {
+                Debug.Log("JC: Unknown encountered on server. Message: " + e.Message + " when reading object");
+            }
+        }
+
     }
+
 }

@@ -599,7 +599,7 @@ PlayerSettings:
   assemblyVersionValidation: 1
   gcWBarrierValidation: 0
   apiCompatibilityLevelPerPlatform:
-    WSA: 6
+    WSA: 3
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: MRTKTutorials-GettingStarted
