@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
     using Amazon;
     using Amazon.S3;
     using Amazon.S3.Model;
+    using UnityEditor;
 
 #if WINDOWS_UWP
     using WindowsStorage = global::Windows.Storage;
@@ -235,9 +236,9 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         //JC: hack, delay the display until the S3 object has a chance to download
         IEnumerator Timer(TaskCompletionSource<bool> completionSource)
         {
-            print(Time.time);
+
             yield return new WaitForSeconds(5);
-            print(Time.time);
+
             StartCoroutine(DisplayDataRoutine(completionSource));
         }
 
@@ -1611,35 +1612,35 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     string contentType = response.Headers["Content-Type"];
                     Debug.Log("JC: Object metadata, Title: " + title);
                     Debug.Log("JC: Content type: " + contentType);
-
-                    //responseBody = reader.ReadToEnd(); // Now you process the response body.
-                    byte[] binaryResponse = reader.ReadBytes(563574);
                     
-                    
-                    responseBody = Encoding.ASCII.GetString(binaryResponse);
-                    //responseBody = BitConverter.ToString(binaryResponse);
+                    //JC: read binary
+                    byte[] binaryResponse = reader.ReadBytes((int)responseStream.Length);
 
-                    //JC: write the .bytes file for debugging
-                    string path = "Assets/Resources/test.bytes";
+                    //JC: write the .bytes file (saving respone directly as TextAsset has encoding issues)
+                    string path = "Assets/Resources/" + request.Key;
                     BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create));
                     writer.Write(binaryResponse);
-                    //StreamWriter writer = new StreamWriter(path);
-                    //writer.Write(responseBody);
                     writer.Close();
 
+                    /*
 
-                    TextAsset myTextAsset = (TextAsset)Resources.Load("test");
+                    //JC: read string (doesn't work because of string encoding,so use binary)
+                    responseBody = reader.ReadToEnd(); 
 
-                  
+                    //JC: save string
+                    string path = "Assets/Resources/test.bytes";
+                    StreamWriter writer = new StreamWriter(path);
+                    writer.Write(responseBody);
+                    writer.Close();
+
+                    */
+
+                    //JC: load saved .bytes file from disk
+                    AssetDatabase.ImportAsset(path);    //refresh the assets, otherwise metadata file not created on the first run and Unity can crash
+                    TextAsset myTextAsset = (TextAsset)Resources.Load(Path.GetFileNameWithoutExtension(path));
                     SUSerializedScenePaths.Add(myTextAsset);
 
-                    //SUSerializedScenePaths.Add(new TextAsset(responseBody));
-
-                    Debug.Log("JC: downloaded a string of length " + responseBody.Length);
-
-                   
-
-                    
+ 
 
                     Debug.Log("JC: added S3 file to list of scene paths");
                     Debug.Log("JC: total paths: " + SUSerializedScenePaths.Count);
