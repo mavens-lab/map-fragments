@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         //JC: S3 client
         private static IAmazonS3 s3Client;
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest1;
-        private Task loadTask = null;
+        private bool FileLoaded = false;
 
         #endregion
 
@@ -229,7 +229,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             }
 
             //JC: test code to download bytes file from S3. "await" doesn't seem to do much
-            LoadFileS3();
+            await LoadFileS3(); //await doesn't seem to delay Update
+            Debug.Log("finished loading files");
         }
 
 
@@ -266,7 +267,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             }
             // If the scene is pre-loaded from disk, display it only once, as consecutive renders
             // will only bring the same result
-            else if (!DisplayFromDiskStarted)
+            else if (!DisplayFromDiskStarted && FileLoaded)
             {
                 DisplayFromDiskStarted = true;
                 try
@@ -423,8 +424,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
 
                 // Start the coroutine and pass in the completion source
                 //JC: add a delay
-                StartCoroutine(Timer(completionSource));
-                
+                //StartCoroutine(Timer(completionSource));
+                StartCoroutine(DisplayDataRoutine(completionSource));
 
                 // Return the newly running task
                 return displayTask;
@@ -461,7 +462,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 // Store all the fragments and build a Scene with them
                 SceneFragment[] sceneFragments = new SceneFragment[SUSerializedScenePaths.Count];
                 int index = 0;
-                Debug.Log("JC: DisplayDataRoutine has " + SUSerializedScenePaths.Count + "scene fragments to load");
+                Debug.Log("JC: DisplayDataRoutine has " + SUSerializedScenePaths.Count + " scene fragments to load");
                 foreach (TextAsset serializedScene in SUSerializedScenePaths)
                 {
                     if (serializedScene != null)
@@ -1586,22 +1587,26 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
 
             Debug.Log("JC: entered LoadFileS3");
 
-
             // Create an S3 client object.
             s3Client = new AmazonS3Client(bucketRegion);
-            ReadObjectDataAsync();
+
+            //name of file to download
+            string ObjectName = "upstairs.bytes";
+
+            //request file and save as fragment
+            await ReadObjectDataAddFragmentAsync(ObjectName);
 
         }
 
-        private async Task ReadObjectDataAsync()
+        private async Task ReadObjectDataAddFragmentAsync(string ObjectName)
         {
-            string responseBody;
+
             try
             {
                 GetObjectRequest request = new GetObjectRequest
                 {
                     BucketName = "map-fragments",
-                    Key = "upstairs.bytes"
+                    Key = ObjectName
                 };
                 using (GetObjectResponse response = await s3Client.GetObjectAsync(request))
                 using (Stream responseStream = response.ResponseStream)
@@ -1640,10 +1645,11 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     TextAsset myTextAsset = (TextAsset)Resources.Load(Path.GetFileNameWithoutExtension(path));
                     SUSerializedScenePaths.Add(myTextAsset);
 
- 
 
-                    Debug.Log("JC: added S3 file to list of scene paths");
-                    Debug.Log("JC: total paths: " + SUSerializedScenePaths.Count);
+                    FileLoaded = true;
+                    Debug.Log("JC: added S3 file to list of scene paths and set FileLoaded=true");
+
+
                 }
             }
             catch (AmazonS3Exception e)
