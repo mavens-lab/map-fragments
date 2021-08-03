@@ -154,6 +154,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
 
         private async void Start()
         {
+            //AddColliders = true;
             SceneRoot = SceneRoot == null ? new GameObject("Scene Root") : SceneRoot;
 
             // Considering that device is currently not supported in the editor means that
@@ -584,6 +585,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 geometryObject.transform.parent = unityParentHolderObject.transform;
                 geometryObject.transform.localPosition = Vector3.zero;
                 geometryObject.transform.localRotation = Quaternion.identity;
+
+                geometryObject.AddComponent<MeshCollider>();
             }
 
             if (RunOnDevice)
@@ -626,6 +629,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
 
                 MeshCollider col = gameObjToReturn.AddComponent<MeshCollider>();
                 col.sharedMesh = unityColliderMesh;
+
+                //Debug.Log("AddColliders: " + gameObjToReturn.name);
             }
 
             // Also the World Mesh is represented as one big Mesh in Unity, different to the rest of SceneObjects
