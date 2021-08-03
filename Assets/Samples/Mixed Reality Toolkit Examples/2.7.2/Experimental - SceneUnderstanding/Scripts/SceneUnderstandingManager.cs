@@ -443,15 +443,21 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         {
             Debug.Log("SceneUnderstandingManager.DisplayData: About to display the latest set of Scene Objects");
 
+            //JC: create a list to store all the files as scenes (instead of scene fragments)
+            List<SceneUnderstanding.Scene> suScenes = new List<SceneUnderstanding.Scene>();
 
-            SceneUnderstanding.Scene suScene = null;
+            //JC: commented this out
+            //SceneUnderstanding.Scene suScene = null;
+
             if (QuerySceneFromDevice)
             {
                 // Get Latest Scene and Deserialize it
                 // Scenes Queried from a device are Scenes composed of one Scene Fragment
                 SceneFragment sceneFragment = GetLatestSceneSerialization();
                 SceneFragment[] sceneFragmentsArray = new SceneFragment[1] { sceneFragment };
-                suScene = SceneUnderstanding.Scene.FromFragments(sceneFragmentsArray);
+
+                //JC: commented this out
+                //suScene = SceneUnderstanding.Scene.FromFragments(sceneFragmentsArray);
 
                 // Get Latest Scene GUID
                 Guid latestGuidSnapShot = GetLatestSUSceneId();
@@ -470,12 +476,16 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                         byte[] sceneData = serializedScene.bytes;
                         SceneFragment frag = SceneFragment.Deserialize(sceneData);
                         sceneFragments[index++] = frag;
+
+                        //JC: save as a scene instead of a sceneFragment
+                        suScenes.Add(Scene.Deserialize(sceneData));
                     }
                 }
 
                 try
                 {
-                    suScene = SceneUnderstanding.Scene.FromFragments(sceneFragments);
+                    //JC: commented this out
+                    //suScene = SceneUnderstanding.Scene.FromFragments(sceneFragments);
                     lock (SUDataLock)
                     {
                         // Store new GUID for data loaded
@@ -492,73 +502,84 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 }
             }
 
-            if (suScene != null)
-            {
-                // Retrieve a transformation matrix that will allow us orient the Scene Understanding Objects into
-                // their correct corresponding position in the unity world
-                System.Numerics.Matrix4x4? sceneToUnityTransformAsMatrix4x4 = GetSceneToUnityTransformAsMatrix4x4(suScene);
-
-                Debug.Log("JC: scene is not null");
-
-                if (sceneToUnityTransformAsMatrix4x4 != null)
+            int k = 0;
+            foreach (Scene suScene in suScenes) {
+                if (suScene != null)
                 {
-                    Debug.Log("JC: transformation is not null");
-                    // If there was previously a scene displayed in the game world, destroy it
-                    // to avoid overlap with the new scene about to be displayed
-                    //JC: disable this to display multiple scenes simultaneously?
-                    DestroyAllGameObjectsUnderParent(SceneRoot.transform);
+                    // Retrieve a transformation matrix that will allow us orient the Scene Understanding Objects into
+                    // their correct corresponding position in the unity world
+                    System.Numerics.Matrix4x4? sceneToUnityTransformAsMatrix4x4 = GetSceneToUnityTransformAsMatrix4x4(suScene);
 
-                    // Allow from one frame to yield the coroutine back to the main thread
-                    yield return null;
+                    Debug.Log("JC: scene is not null");
 
-                    // Using the transformation matrix generated above, port its values into the tranform of the scene root (Numerics.matrix -> GameObject.Transform)
-                    SetUnityTransformFromMatrix4x4(SceneRoot.transform, sceneToUnityTransformAsMatrix4x4.Value, RunOnDevice);
-
-                    if (!RunOnDevice)
+                    if (sceneToUnityTransformAsMatrix4x4 != null)
                     {
-                        // If the scene is not running on a device, orient the scene root relative to the floor of the scene
-                        // and unity's up vector
-                        OrientSceneForPC(SceneRoot, suScene);
-                    }
+                        Debug.Log("JC: transformation is not null");
+                        // If there was previously a scene displayed in the game world, destroy it
+                        // to avoid overlap with the new scene about to be displayed
+                        //JC: disable this to display multiple scenes simultaneously
+                        //DestroyAllGameObjectsUnderParent(SceneRoot.transform);
 
+                        // Allow from one frame to yield the coroutine back to the main thread
+                        yield return null;
 
-                    // After the scene has been oriented, loop through all the scene objects and
-                    // generate their corresponding Unity Object
-                    IEnumerable<SceneUnderstanding.SceneObject> sceneObjects = suScene.SceneObjects;
+                        // Using the transformation matrix generated above, port its values into the tranform of the scene root (Numerics.matrix -> GameObject.Transform)
+                        SetUnityTransformFromMatrix4x4(SceneRoot.transform, sceneToUnityTransformAsMatrix4x4.Value, RunOnDevice);
 
-                    Debug.Log("JC: there are " + suScene.SceneObjects.Count + " sceneObjects in the scene");
-
-                    int i = 0;
-                    foreach (SceneUnderstanding.SceneObject sceneObject in sceneObjects)
-                    {
-                        if (DisplaySceneObject(sceneObject))
+                        if (!RunOnDevice)
                         {
-                            if (++i % NumberOfSceneObjectsToLoadPerFrame == 0)
+                            // If the scene is not running on a device, orient the scene root relative to the floor of the scene
+                            // and unity's up vector
+                            OrientSceneForPC(SceneRoot, suScene);
+                        }
+
+
+                        // After the scene has been oriented, loop through all the scene objects and
+                        // generate their corresponding Unity Object
+                        IEnumerable<SceneUnderstanding.SceneObject> sceneObjects = suScene.SceneObjects;
+
+                        Debug.Log("JC: there are " + suScene.SceneObjects.Count + " sceneObjects in the scene");
+
+                        int i = 0;
+                        foreach (SceneUnderstanding.SceneObject sceneObject in sceneObjects)
+                        {
+                            if (DisplaySceneObject(sceneObject,k))
                             {
-                                // Allow a certain number of objects to load before yielding back to main thread
-                                yield return null;
+                                if (++i % NumberOfSceneObjectsToLoadPerFrame == 0)
+                                {
+                                    // Allow a certain number of objects to load before yielding back to main thread
+                                    yield return null;
+                                }
                             }
                         }
+                        Debug.Log("JC: objects in current scene: " + i);
+                        Debug.Log("JC: total sceneObjects: " + SceneRoot.transform.childCount);
+
+                        k++;
+
                     }
+                             
 
                 }
 
-                // When all objects have been loaded, finish.
-                Debug.Log("SceneUnderStandingManager.DisplayData: Display Completed");
 
-                // Run CallBacks for Onload Finished
-                OnLoadFinished.Invoke();
-
-                // Let the task complete
-                completionSource.SetResult(true);
             }
+
+            // When all objects have been loaded, finish.
+            Debug.Log("SceneUnderStandingManager.DisplayData: Display Completed");
+
+            // Run CallBacks for Onload Finished
+            OnLoadFinished.Invoke();
+
+            // Let the task complete
+            completionSource.SetResult(true);
         }
 
         /// <summary>
         /// Create a Unity Game Object for an individual Scene Understanding Object
         /// </summary>
         /// <param name="suObject">The Scene Understanding Object to generate in Unity</param>
-        private bool DisplaySceneObject(SceneUnderstanding.SceneObject suObject)
+        private bool DisplaySceneObject(SceneUnderstanding.SceneObject suObject, int k=0)
         {
             if (suObject == null)
             {
@@ -600,7 +621,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             }
 
             // This gameobject will hold all the geometry that represents the Scene Understanding Object
-            GameObject unityParentHolderObject = new GameObject(suObject.Kind.ToString());
+            GameObject unityParentHolderObject = new GameObject(suObject.Kind.ToString() + k);
             unityParentHolderObject.transform.parent = SceneRoot.transform;
 
             // Scene Understanding uses a Right Handed Coordinate System and Unity uses a left handed one, convert.
@@ -1596,6 +1617,11 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             //request file and save as fragment
             await ReadObjectDataAddFragmentAsync(ObjectName);
 
+            await ReadObjectDataAddFragmentAsync("downstairs.bytes");
+
+            FileLoaded = true;
+            
+
         }
 
         private async Task ReadObjectDataAddFragmentAsync(string ObjectName)
@@ -1645,9 +1671,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     TextAsset myTextAsset = (TextAsset)Resources.Load(Path.GetFileNameWithoutExtension(path));
                     SUSerializedScenePaths.Add(myTextAsset);
 
-
-                    FileLoaded = true;
-                    Debug.Log("JC: added S3 file to list of scene paths and set FileLoaded=true");
+                    Debug.Log("JC: downloaded " + Path.GetFileNameWithoutExtension(path));
+                    
 
 
                 }
