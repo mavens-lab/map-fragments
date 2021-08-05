@@ -609,6 +609,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 geometryObject.transform.parent = unityParentHolderObject.transform;
                 geometryObject.transform.localPosition = Vector3.zero;
                 geometryObject.transform.localRotation = Quaternion.identity;
+
+                geometryObject.AddComponent<MeshCollider>();
             }
 
             if (RunOnDevice)

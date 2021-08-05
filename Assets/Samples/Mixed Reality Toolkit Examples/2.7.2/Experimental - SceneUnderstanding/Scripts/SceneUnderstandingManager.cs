@@ -651,6 +651,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 geometryObject.transform.parent = unityParentHolderObject.transform;
                 geometryObject.transform.localPosition = Vector3.zero;
                 geometryObject.transform.localRotation = Quaternion.identity;
+
+                geometryObject.AddComponent<MeshCollider>();
             }
 
             if (RunOnDevice)
@@ -1695,6 +1697,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         static async Task<List<string>> ListingObjectsAsync(string BucketName)
         {
             List<string> ObjectNames = new List<string>();
+            Debug.Log("Listing objects async");
             try
             {
                 ListObjectsV2Request request = new ListObjectsV2Request
@@ -1705,13 +1708,14 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 ListObjectsV2Response response;
                 do
                 {
+                    Debug.Log("1");
                     response = await s3Client.ListObjectsV2Async(request);
-
+                    Debug.Log("2");
 
                     // Process the response.
                     foreach (S3Object entry in response.S3Objects)
                     {
-                        //Debug.Log("key = " + entry.Key + " size = " + entry.Size);
+                        Debug.Log("key = " + entry.Key + " size = " + entry.Size);
                         ObjectNames.Add(entry.Key);
                     }
                     //Debug.Log("Next Continuation Token: " + response.NextContinuationToken);
