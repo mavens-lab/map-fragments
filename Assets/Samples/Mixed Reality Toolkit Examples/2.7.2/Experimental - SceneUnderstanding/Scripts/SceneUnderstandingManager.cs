@@ -543,7 +543,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                         int i = 0;
                         foreach (SceneUnderstanding.SceneObject sceneObject in sceneObjects)
                         {
-                            if (DisplaySceneObject(sceneObject,k))
+                            if (DisplaySceneObject(sceneObject, k))
                             {
                                 if (++i % NumberOfSceneObjectsToLoadPerFrame == 0)
                                 {
@@ -558,7 +558,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                         k++;
 
                     }
-                             
+
 
                 }
 
@@ -579,7 +579,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         /// Create a Unity Game Object for an individual Scene Understanding Object
         /// </summary>
         /// <param name="suObject">The Scene Understanding Object to generate in Unity</param>
-        private bool DisplaySceneObject(SceneUnderstanding.SceneObject suObject, int k=0)
+        private bool DisplaySceneObject(SceneUnderstanding.SceneObject suObject, int k = 0)
         {
             if (suObject == null)
             {
@@ -1611,19 +1611,22 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             // Create an S3 client object.
             s3Client = new AmazonS3Client(bucketRegion);
 
-            //name of file to download
-            string ObjectName = "upstairs.bytes";
 
-            //request file and save as fragment
-            await ReadObjectDataAddFragmentAsync(ObjectName);
+            string BucketName = "map-fragments";    //name of bucket to download from
 
-            await ReadObjectDataAddFragmentAsync("downstairs.bytes");
+            List<string> ObjectNames = await ListingObjectsAsync(BucketName);
+            foreach (string s in ObjectNames)
+            {
+                Debug.Log(s);
+                await ReadObjectDataAddFragmentAsync(s);
+            }
 
             FileLoaded = true;
-            
+
 
         }
 
+        //JC: download specified object from S3 and add to list of scenes
         private async Task ReadObjectDataAddFragmentAsync(string ObjectName)
         {
 
@@ -1643,7 +1646,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     string contentType = response.Headers["Content-Type"];
                     Debug.Log("JC: Object metadata, Title: " + title);
                     Debug.Log("JC: Content type: " + contentType);
-                    
+
                     //JC: read binary
                     byte[] binaryResponse = reader.ReadBytes((int)responseStream.Length);
 
@@ -1672,7 +1675,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     SUSerializedScenePaths.Add(myTextAsset);
 
                     Debug.Log("JC: downloaded " + Path.GetFileNameWithoutExtension(path));
-                    
+
 
 
                 }
@@ -1688,6 +1691,47 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             }
         }
 
+        //JC: return a list of all items in the current bucket. TO DO: make sure they're .bytes files
+        static async Task<List<string>> ListingObjectsAsync(string BucketName)
+        {
+            List<string> ObjectNames = new List<string>();
+            try
+            {
+                ListObjectsV2Request request = new ListObjectsV2Request
+                {
+                    BucketName = BucketName,
+                    MaxKeys = 10
+                };
+                ListObjectsV2Response response;
+                do
+                {
+                    response = await s3Client.ListObjectsV2Async(request);
+
+
+                    // Process the response.
+                    foreach (S3Object entry in response.S3Objects)
+                    {
+                        //Debug.Log("key = " + entry.Key + " size = " + entry.Size);
+                        ObjectNames.Add(entry.Key);
+                    }
+                    //Debug.Log("Next Continuation Token: " + response.NextContinuationToken);
+                    request.ContinuationToken = response.NextContinuationToken;
+                } while (response.IsTruncated);
+
+                return ObjectNames;
+            }
+            catch (AmazonS3Exception amazonS3Exception)
+            {
+                Debug.Log("S3 error occurred. Exception: " + amazonS3Exception.ToString());
+                //Console.ReadKey();
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Exception: " + e.ToString());
+               //Console.ReadKey();
+            }
+            return null;
+        }
     }
 
 }
