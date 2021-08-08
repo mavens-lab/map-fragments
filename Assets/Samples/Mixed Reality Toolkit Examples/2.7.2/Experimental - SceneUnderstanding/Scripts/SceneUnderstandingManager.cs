@@ -59,6 +59,9 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         [Tooltip("GameObject that will be the parent of all Scene Understanding related game objects. If field is left empty an empty gameobject named 'Root' will be created.")]
         public GameObject SceneRoot = null;
 
+        //JC: list of game objects, one for each scene. SceneObjects will be the children of each item in the list
+        public List<GameObject> SceneRootList = new List<GameObject>();
+
         [Header("On Device Request Settings")]
         [Tooltip("Radius of the sphere around the camera, which is used to query the environment.")]
         [Range(5f, 100f)]
@@ -523,14 +526,20 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                         // Allow from one frame to yield the coroutine back to the main thread
                         yield return null;
 
+                        //JC: create a new GameObject parent for the current scene
+                        SceneRootList.Add(new GameObject("Scene" + k));
+                        SceneRootList[k].transform.parent = SceneRoot.transform;
+
                         // Using the transformation matrix generated above, port its values into the tranform of the scene root (Numerics.matrix -> GameObject.Transform)
+                        //JC: the transformation is usually identity, so doesn't do anything
                         SetUnityTransformFromMatrix4x4(SceneRoot.transform, sceneToUnityTransformAsMatrix4x4.Value, RunOnDevice);
 
                         if (!RunOnDevice)
                         {
                             // If the scene is not running on a device, orient the scene root relative to the floor of the scene
                             // and unity's up vector
-                            OrientSceneForPC(SceneRoot, suScene);
+                            //JC: modified from SceneRoot -> SceneRootList, since need to change the transform for each scene individually
+                            OrientSceneForPC(SceneRootList[k], suScene);
                         }
 
 
@@ -539,6 +548,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                         IEnumerable<SceneUnderstanding.SceneObject> sceneObjects = suScene.SceneObjects;
 
                         Debug.Log("JC: there are " + suScene.SceneObjects.Count + " sceneObjects in the scene");
+
+
 
                         int i = 0;
                         foreach (SceneUnderstanding.SceneObject sceneObject in sceneObjects)
@@ -552,8 +563,8 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                                 }
                             }
                         }
-                        Debug.Log("JC: objects in current scene: " + i);
-                        Debug.Log("JC: total sceneObjects: " + SceneRoot.transform.childCount);
+                        Debug.Log("JC: objects in current scene: " + SceneRootList[k].transform.childCount);
+                        Debug.Log("JC: total scenes: " + SceneRoot.transform.childCount);
 
                         k++;
 
@@ -621,8 +632,9 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             }
 
             // This gameobject will hold all the geometry that represents the Scene Understanding Object
-            GameObject unityParentHolderObject = new GameObject(suObject.Kind.ToString() + k);
-            unityParentHolderObject.transform.parent = SceneRoot.transform;
+            GameObject unityParentHolderObject = new GameObject(suObject.Kind.ToString());
+            unityParentHolderObject.transform.parent = SceneRootList[k].transform;
+            //unityParentHolderObject.transform.parent = SceneRoot.transform;   //JC: make a new parent for each scene, instead of all scenes under one parent
 
             // Scene Understanding uses a Right Handed Coordinate System and Unity uses a left handed one, convert.
             System.Numerics.Matrix4x4 converted4x4LocationMatrix = ConvertRightHandedMatrix4x4ToLeftHanded(suObject.GetLocationAsMatrix());
@@ -1262,7 +1274,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 Vector3 floorNormalUnity = new Vector3(floorNormal.X, floorNormal.Y, floorNormal.Z);
 
                 Quaternion rotation = Quaternion.FromToRotation(floorNormalUnity, Vector3.up);
-                SceneRoot.transform.rotation = rotation;
+                sceneRoot.transform.rotation = rotation;    //JC: changed from "SceneRoot" to local variable "sceneRoot" (original version was typo?)
             }
         }
 
