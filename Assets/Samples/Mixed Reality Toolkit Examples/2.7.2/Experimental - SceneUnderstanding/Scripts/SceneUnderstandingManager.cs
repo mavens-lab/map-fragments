@@ -178,6 +178,10 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest1;
         private bool FileLoaded = false;
 
+
+        // TD: Oculus player custom script
+        public OculusAdapt oculusPlayer;
+
         #endregion
 
         #region Unity Start and Update
@@ -234,6 +238,10 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             //JC: test code to download bytes file from S3. "await" doesn't seem to do much
             await LoadFileS3(); //await doesn't seem to delay Update
             Debug.Log("finished loading files");
+
+            // TD: Assign Oculus player by looking for OVRPlayerController GameObject
+            oculusPlayer = FindObjectOfType<OculusAdapt>();
+            Debug.LogWarning(oculusPlayer.name);
         }
 
 
@@ -259,6 +267,7 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                         try
                         {
                             await DisplayDataAsync();
+                            
                         }
                         catch (Exception ex)
                         {
@@ -664,7 +673,19 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                 geometryObject.transform.localPosition = Vector3.zero;
                 geometryObject.transform.localRotation = Quaternion.identity;
 
+                // TD: Add a MeshCollider to surfaces created by SceneUnderstanding
                 geometryObject.AddComponent<MeshCollider>();
+
+                // TD: Valid surfaces for walking will be mostly upwards-facing, and also labeled FloorMesh by SceneUnderstanding
+                if(oculusPlayer.gameObject.activeSelf){
+                    float dotProduct = Vector3.Dot(geometryObject.transform.forward, Vector3.up);
+                    if(geometryObject.name == "FloorMesh" && dotProduct >= 0.9f) { 
+                        oculusPlayer.Add(geometryObject.GetComponent<MeshCollider>());
+                        Debug.LogWarning("Added MeshCollider to upright FloorMesh!");
+                        //Debug.DrawLine(geometryObject.transform.position, geometryObject.transform.position + geometryObject.transform.forward * 5, Color.red);
+                    }
+                    else { Debug.LogWarning("Added MeshCollider to unwalkable surface!"); }
+                }
             }
 
             if (RunOnDevice)
