@@ -8,6 +8,13 @@ using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TD: AWS S3
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using System;
+using System.Threading.Tasks;
+
 namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 {
     /// <summary>
@@ -68,7 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
         private Dictionary<SpatialAwarenessSurfaceTypes, Dictionary<int, SpatialAwarenessSceneObject>> observedSceneObjects;
 
+        // TD: AWS S3
+        //private static IAmazonS3 s3Client;
+
         #endregion Private Fields
+
 
         #region MonoBehaviour Functions
 
@@ -94,6 +105,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
             //JC: Load my scene
             loadAnotherScene();
+
+            /*
+            // TD: upload
+            // TO-DO: move the code for calling upload to an appropriate location; using Start() for testing
+            UploadS3();
+            Debug.LogWarning("files uploaded to AWS S3!");
+            */
         }
 
         protected override void OnEnable()
@@ -492,5 +510,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         }
 
         #endregion Helper Functions
+
+        /*
+        // TD: S3 upload
+
+        // TD: using async helper function to bypass requirement to call upload code from within an ansync function, so it can be called from anywhere
+        private async void UploadS3() {
+            await WritingAnObjectAsync();
+        }
+
+        private async Task WritingAnObjectAsync() {
+            try {
+                var putRequest = new PutObjectRequest
+                {
+                    BucketName = "map-fragments",
+                    Key = "upload.bytes",
+                    //ContentBody = "sample text",
+                    //ContentType = "",
+                    //FilePath = ""
+                    FilePath = "D:\\Documents\\Projects\\AURORA\\map-fragments\\Assets\\Samples\\Mixed Reality Toolkit Examples\\2.7.2\\Experimental - SceneUnderstanding\\Scripts\\upload.bytes"
+                };
+
+                putRequest.Metadata.Add("example-metadata-text", "metadata-tlte");
+                PutObjectResponse response = await s3Client.PutObjectAsync(putRequest);
+            }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine("Error encountered ***. Message:'{0}' when writing an object", e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+        }
+        */
     }
 }

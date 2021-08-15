@@ -237,8 +237,14 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
 
             //JC: test code to download bytes file from S3. "await" doesn't seem to do much
             await LoadFileS3(); //await doesn't seem to delay Update
-            Debug.Log("finished loading files");
+            Debug.LogWarning("finished loading files");
 
+            /*
+            // TD: TO-DO: move the code for calling upload to an appropriate location; using Start() for testing
+            await WritingAnObjectAsync();
+            Debug.LogWarning("files uploaded to AWS S3!");
+            */
+            
             // TD: Assign Oculus player by looking for OVRPlayerController GameObject
             oculusPlayer = FindObjectOfType<OculusAdapt>();
             Debug.LogWarning(oculusPlayer.name);
@@ -1705,12 +1711,13 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
                     */
 
                     //JC: load saved .bytes file from disk
+                    /*
                     AssetDatabase.ImportAsset(path);    //refresh the assets, otherwise metadata file not created on the first run and Unity can crash
                     TextAsset myTextAsset = (TextAsset)Resources.Load(Path.GetFileNameWithoutExtension(path));
                     SUSerializedScenePaths.Add(myTextAsset);
 
                     Debug.Log("JC: downloaded " + Path.GetFileNameWithoutExtension(path));
-
+                    */
 
 
                 }
@@ -1769,6 +1776,33 @@ namespace Microsoft.MixedReality.SceneUnderstanding.Samples.Unity
             }
             return null;
         }
+
+        // TD: S3 upload
+        private async Task WritingAnObjectAsync() {
+            try {
+                var putRequest = new PutObjectRequest
+                {
+                    BucketName = "map-fragments",
+                    Key = "upload.bytes",
+                    //ContentBody = "sample text",
+                    //ContentType = "",
+                    //FilePath = ""
+                    FilePath = "D:\\Documents\\Projects\\AURORA\\map-fragments\\Assets\\Samples\\Mixed Reality Toolkit Examples\\2.7.2\\Experimental - SceneUnderstanding\\Scripts\\upload.bytes"
+                };
+
+                putRequest.Metadata.Add("example-metadata-text", "metadata-tlte");
+                PutObjectResponse response = await s3Client.PutObjectAsync(putRequest);
+            }
+            catch (AmazonS3Exception e) {
+                Console.WriteLine("Error encountered ***. Message:'{0}' when writing an object", e.Message);
+            }
+            catch (Exception e) {
+                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+        }
+
+
+
     }
 
 }

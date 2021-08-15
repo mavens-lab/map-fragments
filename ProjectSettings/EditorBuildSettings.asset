@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Samples/Mixed Reality Toolkit Examples/2.7.2/Experimental - SceneUnderstanding/Scenes/SceneUnderstandingExample.unity
     guid: d42a352dc9a8c4d4990a924687759199
-  - enabled: 1
+  - enabled: 0
     path: Assets/Samples/Mixed Reality Toolkit Examples/2.7.2/Experimental - SceneUnderstanding/Scenes/ViewScenes.unity
     guid: 2b35b5827116b134fa7a3247ccbc4a14
   m_configObjects:

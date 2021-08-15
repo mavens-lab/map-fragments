@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 47976048}
   - component: {fileID: 47976050}
   - component: {fileID: 47976049}
+  - component: {fileID: 47976051}
   m_Layer: 0
   m_Name: Demo Controller
   m_TagString: Untagged
@@ -475,6 +476,18 @@ MonoBehaviour:
   worldToggle: {fileID: 1789166751}
   completelyInferred: {fileID: 1044491765}
   backgroundToggle: {fileID: 642654055}
+--- !u!114 &47976051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47976047}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c34be3ead35b95418d3be0b6259eba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &81117436
 PrefabInstance:
   m_ObjectHideFlags: 0
