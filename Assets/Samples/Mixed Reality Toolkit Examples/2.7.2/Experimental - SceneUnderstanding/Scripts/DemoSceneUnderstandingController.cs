@@ -77,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 
         // TD: AWS S3
         //private static IAmazonS3 s3Client;
+        public S3Upload S3Upload;
 
         #endregion Private Fields
 
@@ -261,6 +262,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         public void SaveScene()
         {
             observer.SaveScene(SavedSceneNamePrefix);
+
+            // TD: call S3Upload.cs script functions to upload to AWS S3
+            S3Upload.FindFiles(true);
+            S3Upload.UploadS3();
         }
 
         /// <summary>
