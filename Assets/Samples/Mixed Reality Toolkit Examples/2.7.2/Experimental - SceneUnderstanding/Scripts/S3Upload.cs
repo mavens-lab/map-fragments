@@ -9,6 +9,7 @@ using Amazon.S3.Model;
 using System;
 using System.Threading.Tasks;
 using Amazon.Runtime.CredentialManagement;
+using Amazon.Runtime;
 
 // TD: Microsoft File Directory
 using System.IO;
@@ -75,6 +76,7 @@ public class S3Upload : MonoBehaviour {
         }
     }
 
+    // TD: has potential use, but currently unused
     public void ExportFiles() {
         //fileList =
         if (files != null && files.Length > 0) {
@@ -102,7 +104,7 @@ public class S3Upload : MonoBehaviour {
             AWSSteup();
             bytesFiles.text = TMP.text = "AWSSetup() complete!";
 
-            s3Client = new AmazonS3Client(bucketRegion);
+            //s3Client = new AmazonS3Client(bucketRegion);
             await WritingAnObjectAsync();
             bytesFiles.text = TMP.text = "WritingAnObjectAsync() complete!";
 
@@ -121,7 +123,7 @@ public class S3Upload : MonoBehaviour {
                     //Key = "upload.bytes",
                     //FilePath = "D:\\Documents\\Projects\\AURORA\\map-fragments\\Assets\\Samples\\Mixed Reality Toolkit Examples\\2.7.2\\Experimental - SceneUnderstanding\\Scripts\\upload3.bytes"
                     //FilePath = "C:\\Data\\Users\\AZNno\\AppData\\Local\\Packages\\MRTKTutorials-GettingStarted_pzq3xp76mxafg\\LocalState\\playerprefs.dat.bak"
-                    FilePath = files[files.Length]
+                    FilePath = files[0]
                 };
 
                 putRequest.Metadata.Add("example-metadata-text", "metadata-tlte");
@@ -141,8 +143,23 @@ public class S3Upload : MonoBehaviour {
     }
     public void AWSSteup() {
         bytesFiles.text = TMP.text = "AWSSetup() inside";
-        AWSWriteCredentials();
+        //AWSWriteCredentials();
+        AWSDirectCredentials();
     }
+
+    private void AWSDirectCredentials()
+    {
+        var config = new AmazonS3Config
+        {
+            RegionEndpoint = RegionEndpoint.USWest1
+        };
+
+        var credentials = new BasicAWSCredentials("AKIA4WMNDCTQUMVUACQV", "H6GyDD7jOAlx1pLLXaFJg2qv9GBziCB73+8OSX9E");
+        s3Client = new AmazonS3Client(credentials, config);
+
+    }
+
+    // TD: unused below this line: ====================================================================================
 
     // TD: Warning: Writes AWS Certificiate Credentials directly in as plain text; meant only for alpha build to work
     // TD: TODO: change to secure AWS credential method later
@@ -164,6 +181,8 @@ public class S3Upload : MonoBehaviour {
         bytesFiles.text = TMP.text = "AWSWriteCredentials() profile set";
 
         var sharedFile = new SharedCredentialsFile();
+        bytesFiles.text = TMP.text = "AWSWriteCredentials() sharedFile";
+
         sharedFile.RegisterProfile(profile);
         bytesFiles.text = TMP.text = "AWSWriteCredentials() registered profile";
 
