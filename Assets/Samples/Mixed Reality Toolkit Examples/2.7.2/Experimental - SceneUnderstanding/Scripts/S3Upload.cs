@@ -34,6 +34,7 @@ public class S3Upload : MonoBehaviour {
     //public TextMesh tm;
     public TMP_Text TMP;
     public TMP_Text bytesFiles;
+    private int temp;
 
     private void Start() {
         files = null;
@@ -111,7 +112,8 @@ public class S3Upload : MonoBehaviour {
             Debug.LogWarning("S3 files uploaded!");
 
         }
-        bytesFiles.text = TMP.text = "Upload complete!";
+        bytesFiles.text = TMP.text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "Upload complete! Length: " + temp + "\n";
+
     }
 
     private async Task WritingAnObjectAsync() {
@@ -123,8 +125,9 @@ public class S3Upload : MonoBehaviour {
                     //Key = "upload.bytes",
                     //FilePath = "D:\\Documents\\Projects\\AURORA\\map-fragments\\Assets\\Samples\\Mixed Reality Toolkit Examples\\2.7.2\\Experimental - SceneUnderstanding\\Scripts\\upload3.bytes"
                     //FilePath = "C:\\Data\\Users\\AZNno\\AppData\\Local\\Packages\\MRTKTutorials-GettingStarted_pzq3xp76mxafg\\LocalState\\playerprefs.dat.bak"
-                    FilePath = files[0]
+                    FilePath = files[files.Length - 1]
                 };
+                temp = files.Length;
 
                 putRequest.Metadata.Add("example-metadata-text", "metadata-tlte");
                 PutObjectResponse response = await s3Client.PutObjectAsync(putRequest);
@@ -181,10 +184,10 @@ public class S3Upload : MonoBehaviour {
         bytesFiles.text = TMP.text = "AWSWriteCredentials() profile set";
 
         var sharedFile = new SharedCredentialsFile();
-        bytesFiles.text = TMP.text = "AWSWriteCredentials() sharedFile";
+        bytesFiles.text = TMP.text = "AWSWriteCredentials() sharedFile"; // TD: Hololens executes up to here
 
         sharedFile.RegisterProfile(profile);
-        bytesFiles.text = TMP.text = "AWSWriteCredentials() registered profile";
+        bytesFiles.text = TMP.text = "AWSWriteCredentials() registered profile"; // TD: Hololens is unable to output this "debug" log
 
         //var netSdkStore = new NetSDKCredentialsFile();
         //netSdkStore.RegisterProfile(profile);
