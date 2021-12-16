@@ -34,7 +34,12 @@ public class S3Upload : MonoBehaviour {
     //public TextMesh tm;
     public TMP_Text TMP;
     public TMP_Text bytesFiles;
+    public TMP_Text timings;
     private int temp;
+
+    // TD: telemetry/data/timings
+    private System.Diagnostics.Stopwatch stopwatch;
+    //private string timedEvent;
 
     private void Start() {
         files = null;
@@ -66,15 +71,25 @@ public class S3Upload : MonoBehaviour {
             }
         }
         else {
+            // TD: time file finding execution
+            System.Diagnostics.Stopwatch file_stopwatch = new System.Diagnostics.Stopwatch();
+            file_stopwatch.Start();
+
             files = Directory.GetFiles(Application.persistentDataPath, "*.bytes");
             if(files != null) {
-                bytesFiles.text = TMP.text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + ".bytes files found:" + "\n";
+                bytesFiles.text = TMP.text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "Newest .bytes file found:" + "\n";
+
+                file_stopwatch.Stop();
+                timings.text = "TD: " + "FindFiles: " + file_stopwatch.ElapsedMilliseconds + "ms elaped.\n\n";
             }
+            file_stopwatch.Stop();
         }
-        
+        /*
         foreach (string s in files) {
             bytesFiles.text = TMP.text += s + "\n";
         }
+        */
+        bytesFiles.text = TMP.text = "Latest .bytes file: " + files[files.Length - 1];
     }
 
     // TD: has potential use, but currently unused
@@ -112,15 +127,18 @@ public class S3Upload : MonoBehaviour {
             Debug.LogWarning("S3 files uploaded!");
 
         }
-        bytesFiles.text = TMP.text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "Upload complete! Length: " + temp + "\n";
+        bytesFiles.text = TMP.text = "\n\n\n\n\n" + "Upload complete!\n Total .bytes files saved and uploaded: " + temp + "\n";
 
     }
 
     private async Task WritingAnObjectAsync() {
-        bytesFiles.text = TMP.text = "WritingAnObjectAsync() inside";
+        // TD: stopwatch start
+        System.Diagnostics.Stopwatch write_stopwatch = new System.Diagnostics.Stopwatch();
+        write_stopwatch.Start();
+
+        bytesFiles.text = TMP.text = "Uploading .bytes scene file...";
         try {
-                var putRequest = new PutObjectRequest
-                {
+                var putRequest = new PutObjectRequest {
                     BucketName = "map-fragments",
                     //Key = "upload.bytes",
                     //FilePath = "D:\\Documents\\Projects\\AURORA\\map-fragments\\Assets\\Samples\\Mixed Reality Toolkit Examples\\2.7.2\\Experimental - SceneUnderstanding\\Scripts\\upload3.bytes"
@@ -131,47 +149,65 @@ public class S3Upload : MonoBehaviour {
 
                 putRequest.Metadata.Add("example-metadata-text", "metadata-tlte");
                 PutObjectResponse response = await s3Client.PutObjectAsync(putRequest);
-
+                
+                // TD: dummy response for timing purposes
+                PutObjectResponse response2 = response;
+                
+                // TD: stopwatch stop
+                //timings.text += "TD: PutObjectResponse response: " + response;
+                write_stopwatch.Stop();
+                timings.text += "TD: " + "WritingAnObjectAsync: " + write_stopwatch.ElapsedMilliseconds + "ms elaped.\n\n";
         }
-        catch (AmazonS3Exception e)
-        {
+        catch (AmazonS3Exception e) {
             Console.WriteLine("Error encountered ***. Message:'{0}' when writing an object", e.Message);
-            bytesFiles.text = TMP.text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "Error encountered ***. Message:'{0}' when writing an object" + "\n";
+            bytesFiles.text = TMP.text = "\n\n\n\n\n\n" + "Error encountered ***. Message:'{0}' when writing an object" + "\n";
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
-            bytesFiles.text = TMP.text = "\n" + "\n" + "\n" + "\n" + "\n" + "\n" + "Unknown encountered on server. Message:'{0}' when writing an object" + "\n";
+            bytesFiles.text = TMP.text = "\n\n\n\n\n\n" + "Unknown encountered on server. Message:'{0}' when writing an object" + "\n";
         }
     }
     public void AWSSteup() {
-        bytesFiles.text = TMP.text = "AWSSetup() inside";
+        bytesFiles.text = TMP.text = "AWSSetup() begin";
         //AWSWriteCredentials();
         AWSDirectCredentials();
     }
 
-    private void AWSDirectCredentials()
-    {
-        var config = new AmazonS3Config
-        {
+    private void AWSDirectCredentials() {
+        var config = new AmazonS3Config {
             RegionEndpoint = RegionEndpoint.USWest1
         };
 
-        var credentials = new BasicAWSCredentials("AKIA4WMNDCTQUMVUACQV", "H6GyDD7jOAlx1pLLXaFJg2qv9GBziCB73+8OSX9E");
+        var credentials = new BasicAWSCredentials("[REMOVED]", "[REMOVED]"); // TD: removed Dr. Jiasi Chen's AWS S3 credentials, for code commit
         s3Client = new AmazonS3Client(credentials, config);
+    }
+    ///*
+    public void StopwatchStart() {
+        stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+        timings.text = "";
+    }
+    public void StopwatchLap(string timedEvent) {
+        string description = "TD: " + timedEvent + ": " + stopwatch.ElapsedMilliseconds + "ms elaped.\n\n";
 
+        //Debug.Log(description);
+        timings.text += description;
     }
 
+    public void StopwatchEnd() {
+        stopwatch.Stop();
+    }
+    //*/
     // TD: unused below this line: ====================================================================================
 
     // TD: Warning: Writes AWS Certificiate Credentials directly in as plain text; meant only for alpha build to work
     // TD: TODO: change to secure AWS credential method later
-    private void AWSWriteCredentials() {
-        bytesFiles.text = TMP.text = "AWSWriteCredentials() inside";
+    private void AWSWriteCredentials() { // TD: removed Dr. Jiasi Chen's AWS S3 credentials, for code commit
+        bytesFiles.text = TMP.text = "AWSWriteCredentials() begin";
 
         string profileName = "[default]";
-        string aws_access_key_id = "AKIA4WMNDCTQUMVUACQV";
-        string aws_secret_access_key = "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";
+        string aws_access_key_id = "[REMOVED]";
+        string aws_secret_access_key = "[REMOVED]";
 
         bytesFiles.text = TMP.text = "AWSWriteCredentials() strings set";
         var options = new CredentialProfileOptions {

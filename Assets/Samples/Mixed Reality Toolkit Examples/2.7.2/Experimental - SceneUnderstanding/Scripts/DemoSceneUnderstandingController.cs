@@ -15,6 +15,9 @@ using Amazon.S3.Model;
 using System;
 using System.Threading.Tasks;
 
+// TD: Telemetry/Data
+//using 
+
 namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
 {
     /// <summary>
@@ -261,11 +264,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SceneUnderstanding
         /// </summary>
         public void SaveScene()
         {
+            // TD: call S3Upload.cs stopwatch to begin timing
+            //S3Upload.StopwatchStart();
+
             observer.SaveScene(SavedSceneNamePrefix);
+            // TD: call S3Uplaod.cs stopwatch to take time once scene is saved
+            //S3Upload.StopwatchLap("save scene");
 
             // TD: call S3Upload.cs script functions to upload to AWS S3
             S3Upload.FindFiles(true);
+            //S3Upload.StopwatchLap("find .bytes files");
+
             S3Upload.UploadS3();
+            //S3Upload.StopwatchLap("upload latest .bytes file");
+            //S3Upload.StopwatchEnd();
         }
 
         /// <summary>
