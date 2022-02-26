@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/auroraXR/Examples/Scenes/ManagerScene.unity
+    guid: 90389f5d7a0bc1e49a42d3ae90489f43
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/auroraXR/Examples/Scenes/auroraXR_MetaDataChange.unity
+    guid: 3e95d8a03fb49fb4c97432959f871f07
+  - enabled: 1
+    path: Assets/auroraXR/Examples/Scenes/auroraXR_Login_VR.unity
+    guid: af1aaca12fce30345a54f41b97cef6cf
+  - enabled: 1
+    path: Assets/auroraXR/Examples/Scenes/auroraXR_ApplicationTest.unity
+    guid: 761ef98f44cc8a040bb630bbfb769376
+  - enabled: 1
+    path: Assets/auroraXR/Examples/Scenes/auroraXR_SpawnableObject.unity
+    guid: 2455d18a8cd248f45955e8a57d55f75c
+  - enabled: 1
+    path: Assets/auroraXR/Examples/Scenes/auroraXR_VRTesting.unity
+    guid: c9f6a367050763f4f8dac3f36334b83e
+  - enabled: 1
+    path: Assets/auroraXR/Examples/Scenes/auroraXR_Movement.unity
+    guid: d6824fea7bd728047839aa2d6d2d300f
+  - enabled: 1
+    path: Assets/Scenes/ViewScenes.unity
+    guid: e6d964d49872fdc4e8f460073fe5a1d4
+  - enabled: 1
+    path: Assets/Scenes/ViewScenesClient.unity
+    guid: 9108b106dab93c54ea8f8e85884907d1
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: 93f7cacf386463f4990de7bd9472e153, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 948b76fa76de8504fb920f32b491e265, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: c4db96fa5f314f642b3f29b262858676, type: 2}

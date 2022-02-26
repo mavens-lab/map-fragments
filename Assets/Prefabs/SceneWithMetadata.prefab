@@ -1,0 +1,468 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2860104853471475347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2931975758008053321}
+  - component: {fileID: 4912962868752499338}
+  - component: {fileID: 5905633758690568396}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2931975758008053321
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2860104853471475347}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5014530636287040879}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -450.5, y: -362}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4912962868752499338
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2860104853471475347}
+  m_CullTransparentMesh: 1
+--- !u!114 &5905633758690568396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2860104853471475347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Metadata
+--- !u!1 &3108063063336354501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5014530636287040879}
+  - component: {fileID: 1179252593852090392}
+  - component: {fileID: 711692825884695596}
+  - component: {fileID: 4644163644905353700}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5014530636287040879
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108063063336354501}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 2931975758008053321}
+  m_Father: {fileID: 4072776170723495005}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!223 &1179252593852090392
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108063063336354501}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &711692825884695596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108063063336354501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!114 &4644163644905353700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108063063336354501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!1 &4072776170723495001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4072776170723495005}
+  - component: {fileID: 4072776170723495004}
+  - component: {fileID: 4072776170723495003}
+  - component: {fileID: -6751874951713586360}
+  - component: {fileID: 2565097519264195348}
+  m_Layer: 0
+  m_Name: SceneWithMetadata
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4072776170723495005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072776170723495001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5014530636287040879}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4072776170723495004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072776170723495001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0db1b247098ed40bc07de1d1af30ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4072776170723495003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072776170723495001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4cd4d51c94385a47b2cce9c15deb504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_auroraManager: {fileID: 0}
+  m_auroraContext: {fileID: 0}
+  m_auroraProxy: {fileID: 0}
+  m_objectType: 0
+  m_auroraSpawnable: {fileID: 0}
+  m_deleteOnServerWhenDestroyed: 0
+  m_transformTrackingMode: 0
+  m_auroraSpatialAnchor: {fileID: 4072776170723495004}
+  m_primaryCoordinateSystem: 0
+  m_requireGeoPositionComponent: 0
+  m_geoPosition: {fileID: 0}
+  m_useEulerAngles: 0
+  m_uuid: 
+  m_secondsBetweenMotionChecks: 0.06
+  m_positionChangeSensitivity: 0.01
+  m_rotationChangeSensitiity: 0.01
+  m_scaleChangeSensitivity: 0.01
+  m_fullUpdateInterval: 5
+  m_makeKinematicWhenNotOwned: 0
+  m_ghostRepresentation: {fileID: 0}
+  m_ghostBackReference: {fileID: 0}
+  m_enableIdleDeletion: 0
+  m_idleDeletionTimeoutSeconds: 30
+  m_auroraObjectPropertyChangeEvents:
+    TransformChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    GeoCoordinateChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    GeoDirectionChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    MetadataChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    MetadataKeyRemoved:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_objectOwnershipEvents:
+    ObjectOwnershipChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipAcquired:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipLost:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipRequestSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipRequestFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipRequestTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_sceneObjectSpecificEvents:
+    RegisterSceneObjectSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    RegisterSceneObjectFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    RegisterSceneObjectTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_spawnableObjectSpecificEvents:
+    ObjectSpawnSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectSpawnFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectSpawnTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_serverRegistrationEvents:
+    ObjectRegistrationStatusChanged:
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_objectDeletionEvents:
+    ServerRequestForObjectDestruction:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectDestroyed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    DeleteObjectSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    DeleteObjectFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    DeleteObjectTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_miscellaneousEvents:
+    EnableRoundTripTimeMeasurements: 0
+    RoundTripTimeMeasurementObtained:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+--- !u!114 &-6751874951713586360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072776170723495001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 119bbcba2b2a42a46a36c1e07cc6b281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_spawnableTypeUuid: 89f650cc-736f-4b95-87d7-21852fb5b6d0
+  m_auroraSpawnableReference: {fileID: -6751874951713586360}
+--- !u!114 &2565097519264195348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4072776170723495001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bebfbfe39f06f54285ae67b988bba09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_auroraGameObject: {fileID: 4072776170723495003}
+  m_metadataKey: Name
+  m_defaultContentType: text/plain
+  m_autoPublishChanges: 1
+  m_maxMetadataChangeEventsPerFrame: 5
+  MetadataChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_maxMetadataDeletedEventsPerFrame: 5
+  MetadataDeleted:
+    m_PersistentCalls:
+      m_Calls: []
+  m_textChangedHandlers:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5905633758690568396}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Text, UnityEngine.UI
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_defaultText: 

@@ -1,0 +1,305 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5035768437601795174
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5035768437601795177}
+  - component: {fileID: 5035768437601795176}
+  - component: {fileID: 1154532215209722240}
+  - component: {fileID: 5635288620380173051}
+  - component: {fileID: 194204835}
+  m_Layer: 13
+  m_Name: Local-User-Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5035768437601795177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035768437601795174}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.05, z: -6.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5035768437601795176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035768437601795174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4cd4d51c94385a47b2cce9c15deb504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_auroraManager: {fileID: 0}
+  m_auroraContext: {fileID: 0}
+  m_auroraProxy: {fileID: 0}
+  m_objectType: 0
+  m_auroraSpawnable: {fileID: 1675405166920805374, guid: 3b2149068d076654aab2254acc40a902,
+    type: 3}
+  m_deleteOnServerWhenDestroyed: 0
+  m_transformTrackingMode: 0
+  m_auroraSpatialAnchor: {fileID: 0}
+  m_primaryCoordinateSystem: 0
+  m_requireGeoPositionComponent: 0
+  m_geoPosition: {fileID: 0}
+  m_useEulerAngles: 0
+  m_uuid: 
+  m_secondsBetweenMotionChecks: 0.03
+  m_positionChangeSensitivity: 0.01
+  m_rotationChangeSensitiity: 0.01
+  m_scaleChangeSensitivity: 0.01
+  m_fullUpdateInterval: 0
+  m_makeKinematicWhenNotOwned: 0
+  m_ghostRepresentation: {fileID: 0}
+  m_ghostBackReference: {fileID: 0}
+  m_auroraObjectPropertyChangeEvents:
+    TransformChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    GeoCoordinateChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    GeoDirectionChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    MetadataChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    MetadataKeyRemoved:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_objectOwnershipEvents:
+    ObjectOwnershipChanged:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipAcquired:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipLost:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipRequestSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipRequestFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectOwnershipRequestTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_sceneObjectSpecificEvents:
+    RegisterSceneObjectSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    RegisterSceneObjectFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    RegisterSceneObjectTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_spawnableObjectSpecificEvents:
+    ObjectSpawnSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectSpawnFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectSpawnTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_serverRegistrationEvents:
+    ObjectRegistrationStatusChanged:
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_objectDeletionEvents:
+    ServerRequestForObjectDestruction:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    ObjectDestroyed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    DeleteObjectSuccessful:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    DeleteObjectFailed:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+    DeleteObjectTimedOut:
+      Enabled: 0
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls: []
+  m_miscellaneousEvents:
+    EnableRoundTripTimeMeasurements: 1
+    RoundTripTimeMeasurementObtained:
+      Enabled: 1
+      MaxEventsPerFrame: 5
+      EventHandlers:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: 
+            m_MethodName: UpdateTextDisplay
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+--- !u!114 &1154532215209722240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035768437601795174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e59ff1bf269aef4d9816e7e4ec013da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_firstName: Remote
+  m_lastName: User 7
+  m_cycleIntervalSeconds: 2
+  m_cycleEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5635288620380173051}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: set_Text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5635288620380173051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035768437601795174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bebfbfe39f06f54285ae67b988bba09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_auroraGameObject: {fileID: 5035768437601795176}
+  m_metadataKey: Name
+  m_defaultContentType: text/plain
+  m_autoPublishChanges: 1
+  m_maxMetadataChangeEventsPerFrame: 5
+  MetadataChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_maxMetadataDeletedEventsPerFrame: 5
+  MetadataDeleted:
+    m_PersistentCalls:
+      m_Calls: []
+  m_textChangedHandlers:
+    m_PersistentCalls:
+      m_Calls: []
+  m_defaultText: 
+--- !u!114 &194204835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035768437601795174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9135f67319eb4f0439cf4d59fb24a10e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectSearchString: Main
+  objectType: 4
